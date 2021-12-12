@@ -11,7 +11,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const fs = require('fs');
 //formidable for image, and using express framework
-// const formidable = require('express-formidable');
+const formidable = require('express-formidable');
 const assert = require('assert');
 const http = require('http');
 const url = require('url');
@@ -22,7 +22,7 @@ const dbName = 'ProjectDatabase';
 
 
 
-// app.use(formidable());
+app.use(formidable());
 app.set('view engine', 'ejs');
 
 //session
@@ -181,6 +181,26 @@ const DeleteInv = (req, res) => {
         else res.redirect('/');
         });
     })
+}
+
+const updateDocument = (criteria, updateDoc, callback) => {
+    const client = new MongoClient(mongourl);
+    client.connect((err) => {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+
+         db.collection('bookings').updateOne(criteria,
+            {
+                $set : updateDoc
+            },
+            (err, results) => {
+                client.close();
+                assert.equal(err, null);
+                callback(results);
+            }
+        );
+    });
 }
 
 //update

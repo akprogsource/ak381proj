@@ -22,6 +22,10 @@
             <li>Inventory Name:<%= results.name %></a></li>
             <li>Inventory Name:<%= results.name %></a></li>
 
+            <% if (Inventory.photo) { %>
+                <img src="data:image/jpg;base64, <%= Inventory.photo %>"><br>
+            <% } %>
+
     </ul>
 </body>
 </html>
